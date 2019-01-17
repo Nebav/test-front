@@ -1,18 +1,44 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <User />
+    <Cities :cities="cities" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Cities from '@/components/Cities.vue'
+import User from '@/components/User.vue'
+import HttpHandler from '@/model/services/HttpHandler'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    Cities,
+    User
+  },
+  data () {
+    return {
+      cities: null,
+      host: 'http://localhost:3000'
+    }
+  },
+  methods: {
+    handleSuccess (data) {
+      this.cities = data
+      console.log(this.cities)
+    },
+    handleError () {
+      console.log('error')
+    }
+  },
+  async mounted () {
+    let result = await HttpHandler.request(`${this.host}/cities`, 'GET')
+    if (result.status === 200) {
+      this.handleSuccess(result.data)
+    } else {
+      console.log('AN ERROR OCCURED')
+    }
   }
 }
 </script>
