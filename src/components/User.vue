@@ -28,6 +28,7 @@ export default {
       this.currentUser = data
       this.currentUserLabel = 'Logged as : ' + this.currentUser.username
       await CookieHandler.saveKey('user', this.currentUser)
+      this.username = ''
     },
     async login () {
       let result = await HttpHandler.request(`${this.host}/users/${this.username}`, 'GET')
@@ -36,7 +37,7 @@ export default {
       } else {
         result = await HttpHandler.request(`${this.host}/users`, 'POST', { username: this.username })
         if (result.status === 200) {
-          this.currentUser = result.data
+          this.handleSuccess(result.data)
         }
       }
     }

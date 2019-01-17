@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <User />
+    <hr>
     <Cities :cities="cities" />
   </div>
 </template>
@@ -19,6 +20,7 @@ export default {
   },
   data () {
     return {
+      userCities: null,
       cities: null,
       host: 'http://localhost:3000'
     }
@@ -26,7 +28,6 @@ export default {
   methods: {
     handleSuccess (data) {
       this.cities = data
-      console.log(this.cities)
     },
     handleError () {
       console.log('error')
@@ -37,7 +38,7 @@ export default {
     if (result.status === 200) {
       this.handleSuccess(result.data)
     } else {
-      console.log('AN ERROR OCCURED')
+      this.handleError()
     }
   }
 }

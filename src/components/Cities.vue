@@ -1,7 +1,7 @@
 <template>
   <div class="cities">
     <div v-for="city in cities" :key="city.position">
-      {{ city.name }}
+      {{ city.name }} - Population : {{ city.population }} Habitants
     </div>
   </div>
 </template>
