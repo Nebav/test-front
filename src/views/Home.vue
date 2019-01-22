@@ -1,40 +1,44 @@
 <template>
-  <div class="home">
-    <User />
-    <hr>
-    <Cities :cities="cities" />
-  </div>
+  <v-container>
+    <v-layout>
+      <div class="home">
+        <User />
+        <hr>
+        <DogList :dogs="dogs" />
+      </div>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 // @ is an alias to /src
-import Cities from '@/components/Cities.vue'
+import DogList from '@/components/DogList.vue'
 import User from '@/components/User.vue'
 import HttpHandler from '@/model/services/HttpHandler'
 
 export default {
   name: 'home',
   components: {
-    Cities,
+    DogList,
     User
   },
   data () {
     return {
-      userCities: null,
-      cities: null,
+      userDogs: null,
+      dogs: null,
       host: 'http://localhost:3000'
     }
   },
   methods: {
     handleSuccess (data) {
-      this.cities = data
+      this.dogs = data
     },
     handleError () {
       console.log('error')
     }
   },
   async mounted () {
-    let result = await HttpHandler.request(`${this.host}/cities`, 'GET')
+    let result = await HttpHandler.request(`${this.host}/dogs`, 'GET')
     if (result.status === 200) {
       this.handleSuccess(result.data)
     } else {
