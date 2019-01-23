@@ -15,18 +15,22 @@
                   </v-layout>
                 </v-container>
               </v-img>
-              <v-card-actions>
+              <v-card-actions v-if="idUser">
                 <v-spacer></v-spacer>
                  <v-flex align-content-end align-baseline>
-                  <i v-if="!showPosition" class="far fa-heart"></i>
+                  <i v-if="!showPosition" class="far fa-heart" @click="addDog()"></i>
                   <i v-if="showPosition" class="far fa-times-circle"></i>
                 </v-flex>
               </v-card-actions>
             </v-card>
         </v-container>
+        <v-snackbar v-model="snackbar" :timeout="6000" :top="true" color="success">
+          Added a "{{ dog.name }}" to your favs
+        </v-snackbar>
   </v-layout>
 </template>
 <script>
+import HttpHandler from '@/model/services/HttpHandler'
 export default {
   name: 'DogCard',
   props: {
@@ -37,6 +41,32 @@ export default {
     showPosition: {
       type: Boolean,
       default: false
+    },
+    idUser: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      snackbar: false,
+      host: 'http://localhost:3000'
+    }
+  },
+  methods: {
+    handleSuccess (data) {
+      this.snackbar = true
+    },
+    handleError () {
+
+    },
+    async addDog () {
+      let result = await HttpHandler.request(`${this.host}/dogs/add`, 'POST', { idUser: this.idUser, idDog: this.dog.id })
+      if (result.status === 201) {
+        this.handleSuccess(result.data)
+      } else {
+        this.handleError()
+      }
     }
   }
 }

@@ -1,10 +1,13 @@
 <template>
   <v-container>
+    <div class="title-page">
+      Dogs List
+    </div>
+    <v-divider :inset="true"></v-divider>
     <v-layout>
+
       <div class="home">
-        <User />
-        <hr>
-        <DogList :dogs="dogs" />
+        <DogList :dogs="dogs" :idUser="idUser" />
       </div>
     </v-layout>
   </v-container>
@@ -13,20 +16,21 @@
 <script>
 // @ is an alias to /src
 import DogList from '@/components/DogList.vue'
-import User from '@/components/User.vue'
 import HttpHandler from '@/model/services/HttpHandler'
+import CookieHandler from '@/model/services/CookieHandler'
 
 export default {
   name: 'home',
   components: {
-    DogList,
-    User
+    DogList
   },
   data () {
     return {
       userDogs: null,
+      user: null,
       dogs: null,
-      host: 'http://localhost:3000'
+      host: 'http://localhost:3000',
+      idUser: ''
     }
   },
   methods: {
@@ -44,6 +48,20 @@ export default {
     } else {
       this.handleError()
     }
+
+    this.user = await CookieHandler.getCookie('user')
+    if (this.user) {
+      this.idUser = this.user.id
+    }
   }
 }
 </script>
+<style scoped>
+.title-page {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+</style>
