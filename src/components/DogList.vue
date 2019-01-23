@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap class="dogs" v-if="dogs">
-      <v-flex v-for="(dog, index) in dogs" :key="dog.id" xs4>
-        <div v-if="sortable">
+      <v-flex v-for="(dog, index) in dogs" :key="dog.id">
+        <div v-if="sortable" class="text-md-center">
           <v-btn v-if="index > 0" color="success" small @click="$emit('moveUpDog', dog)">
             <i class="fas fa-chevron-circle-left"></i>
           </v-btn>
@@ -9,7 +9,7 @@
             <i class="fas fa-chevron-circle-right"></i>
           </v-btn>
         </div>
-        <DogCard :dog="dog" :showPosition="sortable" :idUser="idUser" />
+        <DogCard :dog="dog" :showPosition="sortable" :idUser="idUser" @delete="deleteDog"/>
       </v-flex>
   </v-layout>
 </template>
@@ -35,6 +35,11 @@ export default {
     idUser: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    deleteDog (dog) {
+      this.$emit('delete', dog)
     }
   }
 }

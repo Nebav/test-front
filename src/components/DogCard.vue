@@ -19,7 +19,7 @@
                 <v-spacer></v-spacer>
                  <v-flex align-content-end align-baseline>
                   <i v-if="!showPosition" class="far fa-heart" @click="addDog()"></i>
-                  <i v-if="showPosition" class="far fa-times-circle"></i>
+                  <i v-if="showPosition" class="far fa-times-circle" @click="$emit('delete', dog)"></i>
                 </v-flex>
               </v-card-actions>
             </v-card>

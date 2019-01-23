@@ -6,7 +6,7 @@
     <v-divider :inset="true"></v-divider>
     <v-layout>
       <div class="favs">
-        <DogList :dogs="dogs" :sortable="true" :idUser="idUser" @moveUpDog="moveUpDog" @moveDownDog="moveDownDog" />
+        <DogList :dogs="dogs" :sortable="true" :idUser="idUser" @moveUpDog="moveUpDog" @moveDownDog="moveDownDog" @delete="deleteDog"/>
       </div>
     </v-layout>
   </v-container>
@@ -31,6 +31,10 @@ export default {
     }
   },
   methods: {
+    async deleteDog (dog) {
+      this.dogs = this.dogs.filter(current => current.idDog !== dog.idDog)
+      await this.updateUserDogs()
+    },
     async moveUpDog (dog) {
       let dogIndex = this.dogs.findIndex(current => current.idDog === dog.idDog)
       this.dogs[dogIndex - 1].position++
